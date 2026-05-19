@@ -1,4 +1,4 @@
-import type { UserRole } from "@/lib/generated/prisma/client";
+import type { UserRole } from "@/types/clinical";
 
 export type Permission =
   | "system.manage"
@@ -43,6 +43,8 @@ const allPermissions: Permission[] = [
   "audit.read",
 ];
 
+export const demoUserRole: UserRole = "SUPER_ADMIN";
+
 export const rolePermissions: Record<UserRole, Permission[]> = {
   SUPER_ADMIN: allPermissions,
   HOSPITAL_ADMIN: allPermissions.filter((permission) => permission !== "system.manage"),
@@ -67,6 +69,8 @@ export const rolePermissions: Record<UserRole, Permission[]> = {
   ICU_STAFF: ["patients.read", "encounters.read", "nursing.chart", "vitals.write", "icu.monitor"],
   PATIENT: ["patients.read"],
 };
+
+export const demoPermissions = rolePermissions[demoUserRole];
 
 export function resolvePermissions(role: UserRole, grants: string[] = []): Permission[] {
   return Array.from(new Set([...rolePermissions[role], ...grants.filter(isPermission)]));

@@ -235,15 +235,17 @@ export function PhysicianRoundsPanel({ patients, onPatient, onAction }: { patien
     <WorkstationPanel icon={UsersRound} eyebrow="Physician rounds mode" title="Rounding list and discharge barriers">
       <div className="grid gap-1">
         {patients.map((patient, index) => (
-          <button key={patient.id} type="button" onClick={() => onPatient(patient.id)} className={cn("grid grid-cols-[42px_1fr_120px_90px] items-center border px-2 py-1.5 text-left text-xs hover:bg-accent/40", acuityClasses[patient.acuity])}>
-            <span className="font-mono">{index + 1}/5</span>
-            <span>
-              <span className="font-semibold">{patient.name}</span>
-              <span className="block text-[11px] opacity-80">{patient.bed} · overnight: {patient.lastEvent}</span>
-            </span>
-            <span>{patient.pendingTasks} unresolved</span>
-            <Button size="sm" variant="outline" onClick={(event) => { event.stopPropagation(); onAction(`Round ${patient.name}`); }}>Round</Button>
-          </button>
+          <div key={patient.id} className={cn("grid grid-cols-[42px_1fr_120px_90px] items-center border px-2 py-1.5 text-xs", acuityClasses[patient.acuity])}>
+            <button type="button" onClick={() => onPatient(patient.id)} className="contents text-left">
+              <span className="font-mono">{index + 1}/5</span>
+              <span>
+                <span className="font-semibold">{patient.name}</span>
+                <span className="block text-[11px] opacity-80">{patient.bed} · overnight: {patient.lastEvent}</span>
+              </span>
+              <span>{patient.pendingTasks} unresolved</span>
+            </button>
+            <Button size="sm" variant="outline" onClick={() => onAction(`Round ${patient.name}`)}>Round</Button>
+          </div>
         ))}
       </div>
     </WorkstationPanel>

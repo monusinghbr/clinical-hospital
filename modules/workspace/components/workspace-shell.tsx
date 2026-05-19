@@ -24,6 +24,7 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -144,7 +145,8 @@ const nestedTabs = [
 ] as const;
 
 export function ClinicalWorkspace({ initialView = "overview" }: { initialView?: WorkspaceView }) {
-  const activeView = useClinicalWorkspaceStore((state) => state.activeView);
+  const searchParams = useSearchParams();
+  const storedActiveView = useClinicalWorkspaceStore((state) => state.activeView);
   const activePatientId = useClinicalWorkspaceStore((state) => state.activePatientId);
   const emergencyMode = useClinicalWorkspaceStore((state) => state.emergencyMode);
   const query = useClinicalWorkspaceStore((state) => state.query);
@@ -170,29 +172,42 @@ export function ClinicalWorkspace({ initialView = "overview" }: { initialView?: 
   const [alertPressure, setAlertPressure] = useState(3);
   const [roleContext, setRoleContext] = useState<"ICU" | "ED" | "Rounds" | "OR" | "Nursing" | "Command">("ICU");
   const [roverOpen, setRoverOpen] = useState(false);
+  const [routeView, setRouteView] = useState<WorkspaceView>(initialView);
+  const activeView = routeView ?? storedActiveView;
+
+  const syncView = useCallback(
+    (view: WorkspaceView) => {
+      setRouteView(view);
+      setActiveView(view);
+    },
+    [setActiveView],
+  );
 
   useEffect(() => {
-    setActiveView(initialView);
-  }, [initialView, setActiveView]);
+    const view = searchParams.get("view") as WorkspaceView | null;
+    syncView(view && workspaceViews.some((item) => item.id === view) ? view : initialView);
+  }, [initialView, searchParams, syncView]);
 
   useEffect(() => {
     function applyViewFromUrl() {
       const params = new URLSearchParams(window.location.search);
       const view = params.get("view") as WorkspaceView | null;
       if (view && workspaceViews.some((item) => item.id === view)) {
-        setActiveView(view);
+        syncView(view);
       }
     }
 
     applyViewFromUrl();
     const hydrationTimers = [100, 700, 1600].map((delay) => window.setTimeout(applyViewFromUrl, delay));
+    const viewSyncTimer = window.setInterval(applyViewFromUrl, 300);
     window.addEventListener("popstate", applyViewFromUrl);
 
     return () => {
       hydrationTimers.forEach((timer) => window.clearTimeout(timer));
+      window.clearInterval(viewSyncTimer);
       window.removeEventListener("popstate", applyViewFromUrl);
     };
-  }, [setActiveView]);
+  }, [syncView]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -286,12 +301,12 @@ export function ClinicalWorkspace({ initialView = "overview" }: { initialView?: 
 
   const selectView = useCallback(
     (view: WorkspaceView) => {
-      setActiveView(view);
+      syncView(view);
       const nextUrl = new URL(window.location.href);
       nextUrl.searchParams.set("view", view);
       window.history.replaceState(null, "", nextUrl);
     },
-    [setActiveView],
+    [syncView],
   );
 
   const beginResize = useCallback(

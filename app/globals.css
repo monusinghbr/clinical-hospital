@@ -1,0 +1,105 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #f7f9fb;
+  --foreground: #182026;
+  --panel: #ffffff;
+  --sidebar: #f0f4f7;
+  --primary: #0f766e;
+  --primary-foreground: #ffffff;
+  --secondary: #e7eef3;
+  --secondary-foreground: #182026;
+  --muted: #edf2f6;
+  --muted-foreground: #667985;
+  --accent: #e4f1ef;
+  --accent-foreground: #0f3430;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #d7e1e7;
+  --input: #d7e1e7;
+  --ring: #14b8a6;
+  --popover: #ffffff;
+  --popover-foreground: #182026;
+}
+
+.dark {
+  --background: #111518;
+  --foreground: #eef4f5;
+  --panel: #151b1f;
+  --sidebar: #10161a;
+  --primary: #2dd4bf;
+  --primary-foreground: #052f2b;
+  --secondary: #202a30;
+  --secondary-foreground: #eef4f5;
+  --muted: #1d262b;
+  --muted-foreground: #9aabb4;
+  --accent: #18312e;
+  --accent-foreground: #d7fffa;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #27343b;
+  --input: #31414a;
+  --ring: #2dd4bf;
+  --popover: #151b1f;
+  --popover-foreground: #eef4f5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-panel: var(--panel);
+  --color-sidebar: var(--sidebar);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-width: 320px;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.clinical-terminal * {
+  scrollbar-width: thin;
+}
+
+.clinical-terminal {
+  --panel: color-mix(in srgb, var(--background) 82%, #0f766e 4%);
+}
+
+.clinical-terminal .rounded-md {
+  border-radius: 4px;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  letter-spacing: 0;
+}

@@ -143,7 +143,7 @@ const nestedTabs = [
   "carePlans",
 ] as const;
 
-export function ClinicalWorkspace() {
+export function ClinicalWorkspace({ initialView = "overview" }: { initialView?: WorkspaceView }) {
   const activeView = useClinicalWorkspaceStore((state) => state.activeView);
   const activePatientId = useClinicalWorkspaceStore((state) => state.activePatientId);
   const emergencyMode = useClinicalWorkspaceStore((state) => state.emergencyMode);
@@ -170,6 +170,10 @@ export function ClinicalWorkspace() {
   const [alertPressure, setAlertPressure] = useState(3);
   const [roleContext, setRoleContext] = useState<"ICU" | "ED" | "Rounds" | "OR" | "Nursing" | "Command">("ICU");
   const [roverOpen, setRoverOpen] = useState(false);
+
+  useEffect(() => {
+    setActiveView(initialView);
+  }, [initialView, setActiveView]);
 
   useEffect(() => {
     function applyViewFromUrl() {
@@ -211,7 +215,7 @@ export function ClinicalWorkspace() {
       const now = new Date();
       const event: WorkspaceEvent = {
         ...template,
-        id: `live-${now.getTime()}`,
+        id: `live-${now.getTime()}-${Math.random().toString(36).slice(2, 8)}`,
         time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
       setLiveEvents((events) => [event, ...events].slice(0, 12));
@@ -330,7 +334,7 @@ export function ClinicalWorkspace() {
   }
 
   return (
-    <div className={cn("clinical-terminal min-h-screen bg-background text-foreground", emergencyMode && "bg-red-950/10")}>
+    <div className={cn("clinical-terminal min-h-screen bg-background pb-32 text-foreground", emergencyMode && "bg-red-950/10")}>
       <div className="border-b border-border bg-panel px-3 py-2">
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-2 rounded border border-border bg-background px-2 py-1 text-[11px]">

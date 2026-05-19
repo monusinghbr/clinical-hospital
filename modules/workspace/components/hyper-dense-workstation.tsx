@@ -162,8 +162,8 @@ export function EscalationEngine({ events, onAction }: { events: WorkspaceEvent[
   return (
     <WorkstationPanel icon={BellRing} eyebrow="Smart clinical alert engine" title="Cascading escalation routes">
       <div className="grid gap-1">
-        {alertRows.map(([type, label, route, state, tone]) => (
-          <button key={`${type}-${label}`} type="button" onClick={() => onAction(`${type} alert route`)} className={cn("grid grid-cols-[112px_1fr_220px_86px] items-center border px-2 py-1.5 text-left text-xs hover:bg-accent/40", acuityClasses[tone as Acuity])}>
+        {alertRows.map(([type, label, route, state, tone], index) => (
+          <button key={`${type}-${label}-${index}`} type="button" onClick={() => onAction(`${type} alert route`)} className={cn("grid grid-cols-[112px_1fr_220px_86px] items-center border px-2 py-1.5 text-left text-xs hover:bg-accent/40", acuityClasses[tone as Acuity])}>
             <span className="font-mono font-semibold">{type}</span>
             <span className="truncate font-semibold">{label}</span>
             <span className="truncate text-[11px] opacity-80">{route}</span>

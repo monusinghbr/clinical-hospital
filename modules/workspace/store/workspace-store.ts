@@ -1,7 +1,6 @@
 "use client";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 import type { WorkspaceView } from "@/modules/workspace/types/workspace";
 
@@ -26,28 +25,23 @@ type WorkspaceState = {
   setRightPanelWidth: (width: number) => void;
 };
 
-export const useClinicalWorkspaceStore = create<WorkspaceState>()(
-  persist(
-    (set) => ({
-      activeView: "overview",
-      activePatientId: "p-001",
-      rightRailOpen: true,
-      emergencyMode: false,
-      query: "",
-      commandOpen: false,
-      patientNestedTab: "overview",
-      leftPanelWidth: 316,
-      rightPanelWidth: 360,
-      setActiveView: (activeView) => set({ activeView }),
-      setActivePatientId: (activePatientId) => set({ activePatientId }),
-      setRightRailOpen: (rightRailOpen) => set({ rightRailOpen }),
-      setEmergencyMode: (emergencyMode) => set({ emergencyMode }),
-      setQuery: (query) => set({ query }),
-      setCommandOpen: (commandOpen) => set({ commandOpen }),
-      setPatientNestedTab: (patientNestedTab) => set({ patientNestedTab }),
-      setLeftPanelWidth: (leftPanelWidth) => set({ leftPanelWidth }),
-      setRightPanelWidth: (rightPanelWidth) => set({ rightPanelWidth }),
-    }),
-    { name: "clinical-workspace-ui" },
-  ),
-);
+export const useClinicalWorkspaceStore = create<WorkspaceState>()((set) => ({
+  activeView: "overview",
+  activePatientId: "p-001",
+  rightRailOpen: true,
+  emergencyMode: false,
+  query: "",
+  commandOpen: false,
+  patientNestedTab: "overview",
+  leftPanelWidth: 316,
+  rightPanelWidth: 360,
+  setActiveView: (activeView) => set({ activeView }),
+  setActivePatientId: (activePatientId) => set({ activePatientId }),
+  setRightRailOpen: (rightRailOpen) => set({ rightRailOpen }),
+  setEmergencyMode: (emergencyMode) => set({ emergencyMode }),
+  setQuery: (query) => set({ query }),
+  setCommandOpen: (commandOpen) => set({ commandOpen }),
+  setPatientNestedTab: (patientNestedTab) => set({ patientNestedTab }),
+  setLeftPanelWidth: (leftPanelWidth) => set({ leftPanelWidth }),
+  setRightPanelWidth: (rightPanelWidth) => set({ rightPanelWidth }),
+}));
